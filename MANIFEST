@@ -1,0 +1,8 @@
+Changes
+Makefile.PL
+MANIFEST
+README
+t/Test-TestCoverage.t
+t/TestCoverage/MyTestModule.pm
+lib/Test/TestCoverage.pm
+META.yml                                 Module meta-data (added by MakeMaker)

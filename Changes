@@ -1,0 +1,6 @@
+Revision history for Perl extension Test::TestCoverage.
+
+0.01  Tue Aug 29 19:34:33 2006
+	- original version; created by h2xs 1.23 with options
+		-XA -n Test::TestCoverage
+
