@@ -14,7 +14,7 @@ our @EXPORT = qw(
                  reset_test_coverage
                  reset_all_test_coverage
                 );
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 my $self    = {};
 my $test    = Test::Builder->new();
@@ -134,13 +134,33 @@ Test::TestCoverage - Test if your test covers all 'public' methods of the packag
   
   test_coverage('My::Module');
   
-  # run some test code
+  my $obj = My::Module->new();
+  $obj->foo();
+  $obj->bar();
   
+  # test will be ok, assumed that My::Module has the methods new, foo and bar
+  ok_test_coverage('My::Module');
+  
+  reset_test_coverage('My::Module');
+  reset_all_test_coverage();
+  
+  test_coverage('My::Module');
+  
+  my $obj = My::Method->new();
+  $obj->foo();
+  
+  # test will be not ok, because bar is not invoked
   ok_test_coverage('My::Module');
 
 =head1 DESCRIPTION
 
-If you're writing a new module
+If a module is written, the tests cover just a few methods of the module.
+This module aims to support the author in writing "complete" tests. If one
+of the "public" methods are missed in the testscript, the test C<ok_test_coverage>
+will fail.
+
+"private" methods are defined as methods that names begin with C<_> like 
+C<_private_sub{...}> and "public" is the opposite.
 
 =head1 METHODS
 
@@ -168,12 +188,13 @@ C<reset_all_test_coverage>
 
 =head1 SEE ALSO
 
-L<Test::SubCalls>, L<Test::Builder>
+L<Test::SubCalls>, L<Test::Builder>, L<Test::More>
 
 =head1 BUGS / TODO
 
 There are a lot of things to do. If you experience any problems please contact
-me.
+me. At the moment the methods have to be invoked with full qualified names.
+Exported methods are not detected.
 
 =head1 AUTHOR
 
@@ -186,6 +207,5 @@ Copyright (C) 2006 by Renee Baecker
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself, either Perl version 5.8.8 or,
 at your option, any later version of Perl 5 you may have available.
-
 
 =cut

@@ -3,6 +3,8 @@ Makefile.PL
 MANIFEST
 README
 t/Test-TestCoverage.t
+t/TestCoverage_POD.t
+t/TestCoverage_Pod_Coverage.t
 t/TestCoverage/MyTestModule.pm
 lib/Test/TestCoverage.pm
 META.yml                                 Module meta-data (added by MakeMaker)
