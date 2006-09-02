@@ -7,7 +7,6 @@ WriteMakefile(
     VERSION_FROM      => 'lib/Test/TestCoverage.pm', # finds $VERSION
     PREREQ_PM         => {
                             Test::Builder => 0,
-                            B             => 0,
                             Hook::LexWrap => 0,
                             Exporter      => 0,
                             Devel::Symdump=> 0,

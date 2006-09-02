@@ -13,8 +13,9 @@ our @EXPORT = qw(
                  ok_test_coverage
                  reset_test_coverage
                  reset_all_test_coverage
+                 test_coverage_except
                 );
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 my $self    = {};
 my $test    = Test::Builder->new();
@@ -40,6 +41,19 @@ sub test_coverage{
     }
         
     1;
+}
+
+sub test_coverage_except{
+    my ($self,$package,@subroutines) = @_;
+    
+    for my $subname(@subroutines){
+        if(exists $invokes->{$package} and 
+           exists $invokes->{$package}->{$subname} and
+           exists $self->{subs}->{$package}){
+            @{$self->{subs}->{$package}} = grep{$_ ne $subname}@{$self->{subs}->{$package}};
+            delete $invokes->{$package}->{$subname};
+        }
+    }
 }
 
 sub ok_test_coverage{
@@ -126,7 +140,7 @@ __END__
 
 =head1 NAME
 
-Test::TestCoverage - Test if your test covers all 'public' methods of the package
+Test::TestCoverage - Test if your test covers all 'public' subroutines of the package
 
 =head1 SYNOPSIS
 
@@ -138,7 +152,7 @@ Test::TestCoverage - Test if your test covers all 'public' methods of the packag
   $obj->foo();
   $obj->bar();
   
-  # test will be ok, assumed that My::Module has the methods new, foo and bar
+  # test will be ok, assumed that My::Module has the subroutines new, foo and bar
   ok_test_coverage('My::Module');
   
   reset_test_coverage('My::Module');
@@ -151,50 +165,67 @@ Test::TestCoverage - Test if your test covers all 'public' methods of the packag
   
   # test will be not ok, because bar is not invoked
   ok_test_coverage('My::Module');
+  
+  reset_test_coverage('My::Module');
+  reset_all_test_coverage();
+  
+  test_coverage('My::Module');
+  test_coverage_except('My::Module','bar');
+  
+  my $obj = My::Method->new();
+  $obj->foo();
+  
+  # test will be ok, because bar is excepted of test
+  ok_test_coverage('My::Module');
 
 =head1 DESCRIPTION
 
-If a module is written, the tests cover just a few methods of the module.
+If a module is written, the tests cover just a few subroutines of the module.
 This module aims to support the author in writing "complete" tests. If one
-of the "public" methods are missed in the testscript, the test C<ok_test_coverage>
+of the "public" subroutines are missed in the testscript, the test C<ok_test_coverage>
 will fail.
 
-"private" methods are defined as methods that names begin with C<_> like 
+"private" subroutines are defined as subroutines that names begin with C<_> like 
 C<_private_sub{...}> and "public" is the opposite.
 
-=head1 METHODS
+=head1 subroutines
 
 =head2 test_coverage $module
 
 Tells C<Test::TestCoverage> for what module the coverage should be tested
 
-=head3 ok_test_coverage $module
+=head2 ok_test_coverage $module
 
-Checks if all "public" methods of C<$module> were called in the testscript
+Checks if all "public" subroutines of C<$module> were called in the testscript
 
-=head3 reset_test_coverage $module
+=head2 reset_test_coverage $module
 
-Resets the counter for all method invokations of C<$module>'s methods.
+Resets the counter for all method invokations of C<$module>'s subroutines.
 
-=head3 reset_all_test_coverage
+=head2 reset_all_test_coverage
 
-Resets the counter for all methods of all modules that were registerd via
+Resets the counter for all subroutines of all modules that were registerd via
 C<test_coverage>.
+
+=head2 test_coverage_except $module @subs
+
+Test all "public" subroutines of C<$module> except the subroutines named in
+the array.
 
 =head1 EXPORT
 
 C<test_coverage>, C<ok_test_coverage>, C<reset_test_coverage>,
-C<reset_all_test_coverage>
+C<reset_all_test_coverage>, C<test_coverage_except>
 
 =head1 SEE ALSO
 
-L<Test::SubCalls>, L<Test::Builder>, L<Test::More>
+L<Test::SubCalls>, L<Test::Builder>, L<Test::More>, L<Devel::Cover>
 
 =head1 BUGS / TODO
 
 There are a lot of things to do. If you experience any problems please contact
-me. At the moment the methods have to be invoked with full qualified names.
-Exported methods are not detected.
+me. At the moment the subroutines have to be invoked with full qualified names.
+Exported subroutines are not detected.
 
 =head1 AUTHOR
 

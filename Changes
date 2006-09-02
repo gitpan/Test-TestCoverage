@@ -6,4 +6,8 @@ Revision history for Perl extension Test::TestCoverage.
         
 0.02  Thu Aug 31 09:51:22 2006
     - added some POD 
+    
+0.03  Thu Aug 31 17:11:52 2006
+    - fixed some POD errors
+    - added test_coverage_except
 
