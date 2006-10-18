@@ -11,20 +11,23 @@ use base qw(Exporter);
 our @EXPORT = qw(
                  test_coverage 
                  ok_test_coverage
+                 all_test_coverage_ok
                  reset_test_coverage
                  reset_all_test_coverage
                  test_coverage_except
                 );
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 my $self    = {};
 my $test    = Test::Builder->new();
 my $invokes = {};
+my $last    = '';
 
 
 sub test_coverage{
     my ($package) = @_;
     return unless defined $package;
+    $last = $package;
     _get_subroutines($package);
     for my $subref(@{$self->{subs}->{$package}}){
         my $sub      = $subref->[0];
@@ -56,9 +59,23 @@ sub test_coverage_except{
     }
 }
 
+sub all_test_coverage_ok{
+    my ($msg) = @_;
+    
+    for my $package(keys %$invokes){
+        ok_test_coverage($package,$msg);
+    }
+    1;
+}
+
 sub ok_test_coverage{
     my ($package,$msg) = @_;
     
+    if(!$package or (!exists $invokes->{$package}) 
+                     and $package !~ /^(?:\w+(?:::)?)+$/){
+        $package = $last;
+    }
+        
     unless(exists $invokes->{$package}){
         warn $package.' was not tested';
         return;
@@ -212,6 +229,10 @@ C<test_coverage>.
 Test all "public" subroutines of C<$module> except the subroutines named in
 the array.
 
+=head2 all_test_coverage_ok 
+
+tests the test coverage for each registered module.
+
 =head1 EXPORT
 
 C<test_coverage>, C<ok_test_coverage>, C<reset_test_coverage>,
@@ -220,6 +241,7 @@ C<reset_all_test_coverage>, C<test_coverage_except>
 =head1 SEE ALSO
 
 L<Test::SubCalls>, L<Test::Builder>, L<Test::More>, L<Devel::Cover>
+
 
 =head1 BUGS / TODO
 
