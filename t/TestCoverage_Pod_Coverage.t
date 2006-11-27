@@ -1,17 +1,10 @@
-# Before `make install' is performed this script should be runnable with
-# `make test'. After `make install' it should work as `perl Test-TestCoverage.t'
+#!perl -T
 
-#########################
-
-# change 'tests => 1' to 'tests => last_test_to_print';
-
+use strict;
+use warnings;
 use Test::More;
 
-SKIP:{
-    eval "use Test::Pod::Coverage";
-    skip "Test::Pod::Coverage required",1 if $@;
-    plan tests => 1;
-    pod_coverage_ok("Test::TestCoverage");
-}
-
+eval "use Test::Pod::Coverage 1.00";
+plan skip_all => "Test::Pod::Coverage 1.00 required" if $@;
+all_pod_coverage_ok();
 
