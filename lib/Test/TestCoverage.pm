@@ -16,7 +16,7 @@ our @EXPORT = qw(
                  reset_all_test_coverage
                  test_coverage_except
                 );
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 my $self    = {};
 my $test    = Test::Builder->new();
@@ -29,6 +29,9 @@ sub test_coverage{
     return unless defined $package;
     $last = $package;
     _get_subroutines($package);
+    
+    $invokes->{$package} = {};
+    
     for my $subref(@{$self->{subs}->{$package}}){
         my $sub      = $subref->[0];
         my $sub_with = $package . '::' . $sub;

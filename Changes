@@ -11,3 +11,5 @@ Revision history for Perl extension Test::TestCoverage.
     - fixed some POD errors
     - added test_coverage_except
 
+0.06  Tue Jul 24 2007
+    - fixed #24176
