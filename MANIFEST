@@ -8,5 +8,6 @@ t/TestCoverage_POD.t
 t/TestCoverage_Pod_Coverage.t
 t/TestCoverage_Manifest.t
 t/TestCoverage/MyTestModule.pm
+t/except.t
 lib/Test/TestCoverage.pm
 META.yml                                 Module meta-data (added by MakeMaker)

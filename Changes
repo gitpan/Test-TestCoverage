@@ -15,5 +15,5 @@ Revision history for Perl extension Test::TestCoverage.
     - fixed #24176
 
 0.07  Sun Jun 29 2008
-    - fixed test_coverage_except -> thanks to Edward Shrock
+    - fixed test_coverage_except -> thanks to Edward Shrock and Anthony Gladdish
     - added test for test_coverage_except

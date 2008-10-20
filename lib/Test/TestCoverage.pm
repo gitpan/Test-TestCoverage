@@ -16,7 +16,7 @@ our @EXPORT = qw(
                  reset_all_test_coverage
                  test_coverage_except
                 );
-our $VERSION = '0.07';
+our $VERSION = '0.08';
 
 my $self    = {};
 my $test    = Test::Builder->new();
@@ -71,7 +71,7 @@ sub all_test_coverage_ok {
     1;
 }
 
-sub ok_test_coverage{
+sub ok_test_coverage {
     my ($package,$msg) = @_;
     
     if(!$package or (!exists $invokes->{$package}) 
