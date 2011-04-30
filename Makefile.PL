@@ -1,17 +1,54 @@
-use 5.006001;
-use ExtUtils::MakeMaker;
-# See lib/ExtUtils/MakeMaker.pm for details of how to influence
-# the contents of the Makefile that is written.
-WriteMakefile(
-    NAME              => 'Test::TestCoverage',
-    VERSION_FROM      => 'lib/Test/TestCoverage.pm', # finds $VERSION
-    PREREQ_PM         => {
-                            Test::Builder => 0,
-                            Hook::LexWrap => 0,
-                            Exporter      => 0,
-                            Devel::Symdump=> 0,
-                         }, # e.g., Module::Name => 1.1
-    ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
-      (ABSTRACT_FROM  => 'lib/Test/TestCoverage.pm', # retrieve abstract from module
-       AUTHOR         => 'Renee Baecker <module@renee-baecker.de>') : ()),
+
+use strict;
+use warnings;
+
+
+
+use ExtUtils::MakeMaker 6.31;
+
+
+
+my %WriteMakefileArgs = (
+  'ABSTRACT' => 'Test if your test covers all "public" subroutines of the package',
+  'AUTHOR' => 'Renee Baecker <module@renee-baecker.de>',
+  'BUILD_REQUIRES' => {},
+  'CONFIGURE_REQUIRES' => {
+    'ExtUtils::MakeMaker' => '6.31'
+  },
+  'DISTNAME' => 'Test-TestCoverage',
+  'EXE_FILES' => [],
+  'LICENSE' => 'artistic_2',
+  'NAME' => 'Test::TestCoverage',
+  'PREREQ_PM' => {
+    'Devel::Symdump' => '0',
+    'Exporter' => '0',
+    'Test::Builder' => '0',
+    'Test::CheckManifest' => '1.24'
+  },
+  'VERSION' => '0.09',
+  'test' => {
+    'TESTS' => 't/*.t'
+  }
 );
+
+
+unless ( eval { ExtUtils::MakeMaker->VERSION(6.56) } ) {
+  my $br = delete $WriteMakefileArgs{BUILD_REQUIRES};
+  my $pp = $WriteMakefileArgs{PREREQ_PM};
+  for my $mod ( keys %$br ) {
+    if ( exists $pp->{$mod} ) {
+      $pp->{$mod} = $br->{$mod} if $br->{$mod} > $pp->{$mod};
+    }
+    else {
+      $pp->{$mod} = $br->{$mod};
+    }
+  }
+}
+
+delete $WriteMakefileArgs{CONFIGURE_REQUIRES}
+  unless eval { ExtUtils::MakeMaker->VERSION(6.52) };
+
+WriteMakefile(%WriteMakefileArgs);
+
+
+

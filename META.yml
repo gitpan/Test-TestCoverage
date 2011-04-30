@@ -1,14 +1,20 @@
-# http://module-build.sourceforge.net/META-spec.html
-#XXXXXXX This is a prototype!!!  It will change in the future!!! XXXXX#
-name:         Test-TestCoverage
-version:      0.07
-version_from: lib/Test/TestCoverage.pm
-installdirs:  site
+---
+abstract: "Test if your test covers all \"public\" subroutines of the package"
+author:
+  - 'Renee Baecker <module@renee-baecker.de>'
+build_requires: {}
+configure_requires:
+  ExtUtils::MakeMaker: 6.31
+dynamic_config: 0
+generated_by: 'Dist::Zilla version 4.102340, CPAN::Meta::Converter version 2.102160'
+license: artistic_2
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: Test-TestCoverage
 requires:
-    Devel::Symdump:                0
-    Exporter:                      0
-    Hook::LexWrap:                 0
-    Test::Builder:                 0
-
-distribution_type: module
-generated_by: ExtUtils::MakeMaker version 6.17
+  Devel::Symdump: 0
+  Exporter: 0
+  Test::Builder: 0
+  Test::CheckManifest: 1.24
+version: 0.09

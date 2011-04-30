@@ -1,11 +1,12 @@
 package Test::TestCoverage;
 
+# ABSTRACT - Test if your test covers all "public" subroutines of the package
+
 use strict;
 use warnings;
 use Devel::Symdump;
 use Test::Builder;
 use B;
-use Hook::LexWrap;
 use base qw(Exporter);
 
 our @EXPORT = qw(
@@ -16,7 +17,7 @@ our @EXPORT = qw(
                  reset_all_test_coverage
                  test_coverage_except
                 );
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 
 my $self    = {};
 my $test    = Test::Builder->new();
@@ -32,18 +33,36 @@ sub test_coverage {
     
     $invokes->{$package} = {};
     
+    my $moosified = $INC{"Moose.pm"} ? 1 : 0;
+    
     for my $subref(@{$self->{subs}->{$package}}){
         my $sub      = $subref->[0];
+        
         my $sub_with = $package . '::' . $sub;
         unless(exists $invokes->{$package}->{$sub}){
             $invokes->{$package}->{$sub} = 0;
         }
         
-        Hook::LexWrap::wrap($sub_with, 
-            pre => sub{
-                $invokes->{$package}->{$sub}++; 
-            }
-        );
+        no strict 'refs';
+        no warnings 'redefine';
+        
+        my $old     = $package->can( $sub );
+        my $wrapper = sub {
+            $invokes->{$package}->{$sub}++; 
+            $old->( @_ );
+        };
+        
+        if ( !$moosified ) {
+            *{ $package . '::' . $sub } = $wrapper;
+        }
+        else {
+            require Class::MOP;
+            my $meta
+                = $package->can('add_before_method_modifier')
+                ? $package
+                : Class::MOP::class_of( $package );
+            $meta->add_after_method_modifier( $sub, $wrapper );
+        }
     }
         
     1;
@@ -156,11 +175,10 @@ sub _get_sub {
 
 1;
 __END__
-# Below is stub documentation for your module. You'd better edit it!
 
 =head1 NAME
 
-Test::TestCoverage - Test if your test covers all 'public' subroutines of the package
+Test::TestCoverage - Test if your test covers all "public" subroutines of the package
 
 =head1 SYNOPSIS
 
