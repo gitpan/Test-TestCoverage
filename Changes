@@ -1,5 +1,8 @@
 Revision history for Perl extension Test::TestCoverage.
 
+0.10  Sun May 1 2011
+    - skip test if no Moose is installed
+
 0.09  Sat Apr 30 2011
     - Test::TestCoverage now works with Moose classes (#67862, test case by ALEXM)
     - removed dependency on Hook::LexWrap

@@ -18,6 +18,8 @@ use lib $dir;
 my $moose_ok = eval "use Moose" ? 1 : 0;
 
 SKIP: {
+    skip "No Moose", 4 if !$moose_ok;
+    
     my $class = 'TestCoverage::Foobar';
     test_coverage($class);
     test_coverage_except( $class, qw( BUILD meta ) );
@@ -29,5 +31,5 @@ SKIP: {
     is( $obj->attr, 'foobar', 'attr is foobar' );
     ok_test_coverage($class);
     
-    done_testing();
 }
+done_testing();
