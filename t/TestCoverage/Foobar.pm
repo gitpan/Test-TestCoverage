@@ -10,6 +10,11 @@ has 'attr' => (
     isa => 'Str',
 );
 
+sub change {
+    my $self = shift;
+    $self->attr( $self->attr x 2 );
+}
+
 sub BUILD {
     my $self = shift;
 

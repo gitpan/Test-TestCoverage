@@ -17,7 +17,7 @@ our @EXPORT = qw(
                  reset_all_test_coverage
                  test_coverage_except
                 );
-our $VERSION = '0.10';
+our $VERSION = '0.11';
 
 my $self    = {};
 my $test    = Test::Builder->new();
@@ -47,13 +47,12 @@ sub test_coverage {
         no warnings 'redefine';
         
         my $old     = $package->can( $sub );
-        my $wrapper = sub {
-            $invokes->{$package}->{$sub}++; 
-            $old->( @_ );
-        };
         
         if ( !$moosified ) {
-            *{ $package . '::' . $sub } = $wrapper;
+            *{ $package . '::' . $sub } = sub {
+                $invokes->{$package}->{$sub}++; 
+                $old->( @_ );
+            };
         }
         else {
             require Class::MOP;
@@ -61,7 +60,9 @@ sub test_coverage {
                 = $package->can('add_before_method_modifier')
                 ? $package
                 : Class::MOP::class_of( $package );
-            $meta->add_after_method_modifier( $sub, $wrapper );
+            $meta->add_after_method_modifier( $sub, sub {
+                $invokes->{$package}->{$sub}++; 
+            } );
         }
     }
         

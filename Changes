@@ -1,5 +1,9 @@
 Revision history for Perl extension Test::TestCoverage.
 
+0.11  Mon May 2 2011
+    - there were still some problems with Moose classes (original subroutine was
+      called twice) - thanks ALEXM, again
+
 0.10  Sun May 1 2011
     - skip test if no Moose is installed
 
