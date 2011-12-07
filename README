@@ -1,14 +1,18 @@
+Test-TestCoverage
 
+INSTALLATION
 
-This archive contains the distribution Test-TestCoverage,
-version 0.11:
+To install this module, run the following commands:
 
-  Test if your test covers all "public" subroutines of the package
+    perl Makefile.PL
+    make
+    make test
+    make install
 
-This software is Copyright (c) 2011 by Renee Baecker.
+COPYRIGHT AND LICENSE
 
-This is free software, licensed under:
+Copyright (C) 2011 Kenichi Ishigaki
 
-  The Artistic License 2.0
-
+This program is free software; you can redistribute it and/or
+modify it under the same terms as Perl itself.
 

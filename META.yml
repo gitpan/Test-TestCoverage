@@ -1,20 +1,26 @@
 ---
-abstract: "Test if your test covers all \"public\" subroutines of the package"
+abstract: 'see if all the unit tests are actually written'
 author:
-  - 'Renee Baecker <module@renee-baecker.de>'
-build_requires: {}
+  - 'Kenichi Ishigaki <ishigaki@cpan.org>'
+build_requires:
+  ExtUtils::MakeMaker: 0
 configure_requires:
-  ExtUtils::MakeMaker: 6.31
-dynamic_config: 0
-generated_by: 'Dist::Zilla version 4.102340, CPAN::Meta::Converter version 2.102160'
-license: artistic_2
+  ExtUtils::MakeMaker: 0
+dynamic_config: 1
+generated_by: 'ExtUtils::MakeMaker version 6.59, CPAN::Meta::Converter version 2.112150'
+license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
   version: 1.4
 name: Test-TestCoverage
+no_index:
+  directory:
+    - t
+    - inc
 requires:
-  Devel::Symdump: 0
-  Exporter: 0
-  Test::Builder: 0
-  Test::CheckManifest: 1.24
-version: 0.11
+  ExtUtils::Manifest: 0
+  File::Spec: 0
+  Pod::Parser: 0
+  Test::More: 0.47
+  Test::UseAllModules: 0.10
+version: 0.01
